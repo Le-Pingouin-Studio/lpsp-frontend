@@ -1,0 +1,137 @@
+'use client'
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Button } from "../../../components/ui/Button";
+import { useProductStore } from "../../../store/useProductStore";
+import { getWhatsAppProductLink } from "../../../lib/whatsapp";
+
+export default function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const resolvedParams = React.use(params);
+  const { id } = resolvedParams;
+
+  const { selectedProduct: product, loadingSelectedProduct, fetchProductById } = useProductStore();
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  useEffect(() => {
+    fetchProductById(id);
+  }, [id, fetchProductById]);
+
+  if (loadingSelectedProduct) {
+    return <div className="py-20 text-center text-on-surface">Cargando producto...</div>;
+  }
+
+  if (!product) {
+    notFound();
+  }
+
+  // URL of the current product
+  // Ideally this would come from headers or a config, but hardcoding for MVP based on local dev
+  const productUrl = `http://localhost:3000/catalogo/${id}`;
+  const whatsappLink = getWhatsAppProductLink(product.name, productUrl);
+
+  return (
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+      <div className="mb-8">
+        <Link href="/catalogo" className="text-sm font-medium text-secondary hover:text-secondary-dark flex items-center gap-2 transition-colors">
+          &larr; Volver al catálogo
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+        {/* Left column: Images */}
+        <div className="space-y-4">
+          <div className="aspect-square bg-surface-dim rounded-3xl overflow-hidden p-8 flex items-center justify-center border border-outline-variant/50 relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={product.images && product.images.length > 0 ? product.images[selectedImageIndex]?.secureUrl : (product.imageUrl || "/placeholder.png")}
+              alt={product.name}
+              className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-300"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1594902347265-7d4b4a1b023f?q=80&w=1000&auto=format&fit=crop';
+              }}
+            />
+          </div>
+          {product.images && product.images.length > 1 && (
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {product.images.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className={`shrink-0 w-20 h-20 rounded-xl border-2 overflow-hidden bg-surface-dim transition-colors ${selectedImageIndex === index ? 'border-primary' : 'border-transparent hover:border-outline-variant'}`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img.secureUrl || (img as any).secure_url} alt={`${product.name} - Imagen ${index + 1}`} className={`w-full h-full object-cover mix-blend-multiply ${selectedImageIndex !== index && 'opacity-60'}`} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Right column: Details */}
+        <div className="flex flex-col">
+          {product.category && (
+            <span className="text-xs font-bold tracking-wider uppercase text-secondary-dark mb-3">
+              {product.category.name}
+            </span>
+          )}
+          <h1 className="text-4xl md:text-5xl font-bold text-primary-dark mb-4">{product.name}</h1>
+          <p className="text-3xl text-outline mb-8">${Number(product.price).toFixed(2)}</p>
+
+          <div className="prose prose-sm text-on-surface-variant mb-12 leading-relaxed">
+            <p>{product.description}</p>
+          </div>
+
+
+
+          <div className="bg-surface-dim/50 rounded-2xl p-6 mb-8 border border-outline-variant/30">
+            <h3 className="text-sm font-bold text-primary-dark mb-4 flex items-center gap-2">
+              ⚙️ Especificaciones Técnicas
+            </h3>
+            <ul className="space-y-3">
+              {product.ancho && product.alto && product.profundidad && (
+                <li className="flex justify-between text-sm">
+                  <span className="text-on-surface-variant">Dimensiones (Ancho x Alto x Prof.)</span>
+                  <span className="font-medium text-on-surface">{product.ancho} x {product.alto} x {product.profundidad} cm</span>
+                </li>
+              )}
+              <li className="flex justify-between text-sm">
+                <span className="text-on-surface-variant">Stock Disponible</span>
+                <span className="font-medium text-on-surface">{product.stock} unidades</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mb-8">
+            <Link href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block w-full">
+              <Button variant="primary" size="lg" className="w-full bg-secondary hover:bg-secondary-dark text-on-secondary shadow-md h-16 text-lg group">
+                <span className="flex items-center gap-3">
+                  💬 Consultar por WhatsApp
+                </span>
+              </Button>
+            </Link>
+            <p className="text-xs text-center text-on-surface-variant mt-4 italic">
+              Consultar por colores disponibles. Tenga en cuenta que al ser impresión 3D, puede haber leves variaciones en el acabado.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mt-auto border-t border-outline-variant/50 pt-8">
+            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
+              <span className="text-primary-dark text-xl mb-2">🌱</span>
+              <span className="text-xs font-semibold text-on-surface">Bio-Plástico Sostenible</span>
+            </div>
+            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
+              <span className="text-primary-dark text-xl mb-2">⭐</span>
+              <span className="text-xs font-semibold text-on-surface">Calidad Industrial</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
