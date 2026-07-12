@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/isologo.png" alt="Le Pingouin Studio Print Logo" width="200" />
 
-## Getting Started
+  # Le Pingouin Studio Print - Frontend
+  
+  ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=black)
+  ![Next.js](https://img.shields.io/badge/Next.js-16.2.9-black?logo=next.js&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-%5E5-3178C6?logo=typescript&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%5E4-38B2AC?logo=tailwind-css&logoColor=white)
+  ![Framer Motion](https://img.shields.io/badge/Framer_Motion-%5E12.40.0-0055FF?logo=framer&logoColor=white)
+  ![Zustand](https://img.shields.io/badge/Zustand-%5E5.0.14-5A3626)
+  ![React Query](https://img.shields.io/badge/React_Query-%5E5.101.0-FF4154?logo=react-query&logoColor=white)
+</div>
 
-First, run the development server:
+## 📖 Sobre el Proyecto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Este repositorio contiene la aplicación frontend para **Le Pingouin Studio Print**, un ecommerce/catálogo para productos de impresión 3D y servicios de impresión personalizada. La aplicación está construida con las últimas tecnologías web para garantizar un rendimiento óptimo, SEO y una experiencia de usuario fluida e interactiva.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tecnologías y Librerías
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+El proyecto utiliza el siguiente stack tecnológico principal:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** [Next.js](https://nextjs.org/) (v16.2.9)
+- **Librería UI:** [React](https://react.dev/) (v19.2.4)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/) (^5)
+- **Estilos:** [Tailwind CSS](https://tailwindcss.com/) (^4)
+- **Animaciones:** [Framer Motion](https://www.framer.com/motion/) (^12.40.0)
+- **Manejo de Estado Global:** [Zustand](https://github.com/pmndrs/zustand) (^5.0.14)
+- **Data Fetching:** [@tanstack/react-query](https://tanstack.com/query/latest) (^5.101.0)
+- **Formularios:** [React Hook Form](https://react-hook-form.com/) (^7.80.0)
+- **Iconos:** [Lucide React](https://lucide.dev/) (^1.20.0)
+- **Notificaciones:** [React Hot Toast](https://react-hot-toast.com/) (^2.6.0)
 
-## Learn More
+## 🚀 Instalación y Uso
 
-To learn more about Next.js, take a look at the following resources:
+### Prerrequisitos
+- Node.js (v20 o superior recomendado)
+- npm o yarn
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Pasos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/Le-Pingouin-Studio/lpsp-frontend.git
+   ```
 
-## Deploy on Vercel
+2. Instalar las dependencias:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Iniciar el servidor de desarrollo (corre en el puerto 4000 por defecto):
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Abrir [http://localhost:4000](http://localhost:4000) con tu navegador para ver el resultado.
+
+## 📁 Estructura del Proyecto
+
+- `/app`: Rutas y páginas de Next.js (App Router).
+- `/components`: Componentes de React reutilizables (UI, Layout, etc).
+- `/lib`: Funciones de utilidad compartidas y configuración de API.
+- `/public`: Activos estáticos como imágenes (ej. `isologo.png`), iconos, etc.
+- `/store`: Manejo del estado global con Zustand (ej. Carrito, Categorías, Productos).
+
+## 📜 Scripts Disponibles
+
+- `npm run dev`: Inicia el servidor en modo desarrollo.
+- `npm run build`: Compila la aplicación para producción.
+- `npm run start`: Inicia el servidor de producción con los archivos compilados.
+- `npm run lint`: Ejecuta ESLint para buscar errores en el código.
