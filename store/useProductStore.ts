@@ -37,7 +37,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
     
     set({ loadingProducts: true, currentCategories: categories, currentSort: sort, currentPage: 1 });
     try {
-      const { data, meta } = await getProducts({ page: 1, limit: 6, categories, sort });
+      const { data, meta } = await getProducts({ page: 1, limit: 12, categories, sort });
       set({ 
         products: data, 
         hasMore: meta.hasMore, 
@@ -58,7 +58,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
     try {
       const { data, meta } = await getProducts({ 
         page: nextPage, 
-        limit: 6, 
+        limit: 12, 
         categories: state.currentCategories, 
         sort: state.currentSort 
       });

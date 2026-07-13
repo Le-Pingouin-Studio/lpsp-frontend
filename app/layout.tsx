@@ -19,12 +19,7 @@ export const metadata: Metadata = {
   title: "Le Pingouin Studio | Impresión 3D Profesional",
   description: "Servicio de impresión 3D de alta precisión y diseño de modelos a medida en Catriel, Río Negro. Cotiza tu proyecto con nosotros.",
   keywords: ["impresión 3D", "servicios 3D", "Catriel", "diseño 3D", "Rio Negro"],
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' }
-    ]
-  },
+
   openGraph: {
     title: "Le Pingouin Studio | Impresión 3D Profesional",
     description: "Servicio de impresión 3D de alta precisión. Haz realidad tus ideas.",
