@@ -27,21 +27,17 @@ RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
-# Set the correct permission for prerender cache
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-# We need to configure next.config.ts for standalone output or copy node_modules.
-# If standalone is not enabled, we should copy the whole .next and node_modules.
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+# Using standalone output which bundles dependencies and Next.js server
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 4000
 ENV PORT 4000
+ENV HOSTNAME "0.0.0.0"
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
