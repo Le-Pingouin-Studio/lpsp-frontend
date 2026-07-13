@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
@@ -69,14 +70,12 @@ export default function Home() {
                     </Badge>
                     {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
                   </div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={product.imageUrl || 'https://images.unsplash.com/photo-1682532015751-4c7ca29bb4f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
                     alt={product.name}
-                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1682532015751-4c7ca29bb4f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-                    }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-contain p-4 pt-12 group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
