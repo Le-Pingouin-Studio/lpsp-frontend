@@ -2,7 +2,7 @@ FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm ci && npm cache clean --force
 
 FROM node:20-alpine AS builder
 WORKDIR /app
@@ -14,7 +14,7 @@ ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 # ------------------------------------------------------------------------------------
 
-RUN npm run build
+RUN npm run build && rm -rf .next/cache
 
 FROM node:20-alpine AS runner
 WORKDIR /app
