@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Button } from "../../../components/ui/Button";
 import { useProductStore } from "../../../store/useProductStore";
 import { getWhatsAppProductLink } from "../../../lib/whatsapp";
+import { ImageZoomModal } from "../../../components/ui/ImageZoomModal";
 
 export default function ProductDetailPage({
   params,
@@ -16,6 +17,7 @@ export default function ProductDetailPage({
 
   const { selectedProduct: product, loadingSelectedProduct, fetchProductById } = useProductStore();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProductById(id);
@@ -34,6 +36,10 @@ export default function ProductDetailPage({
   const productUrl = `http://localhost:3000/catalogo/${id}`;
   const whatsappLink = getWhatsAppProductLink(product.name, productUrl);
 
+  const allImagesUrls = product.images && product.images.length > 0 
+    ? product.images.map(img => img.secureUrl || (img as any).secure_url) 
+    : [product.imageUrl || "/placeholder.png"];
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
       <div className="mb-8">
@@ -45,7 +51,15 @@ export default function ProductDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
         {/* Left column: Images */}
         <div className="space-y-4">
-          <div className="aspect-square bg-surface-dim rounded-3xl overflow-hidden p-8 flex items-center justify-center border border-outline-variant/50 relative">
+          <div 
+            className="aspect-square bg-surface-dim rounded-3xl overflow-hidden p-8 flex items-center justify-center border border-outline-variant/50 relative cursor-zoom-in group"
+            onClick={() => setIsZoomModalOpen(true)}
+          >
+            <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+              <span className="bg-white/80 text-black px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm shadow-sm opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 transform duration-300">
+                Click para ampliar
+              </span>
+            </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={product.images && product.images.length > 0 ? product.images[selectedImageIndex]?.secureUrl : (product.imageUrl || "/placeholder.png")}
@@ -132,6 +146,14 @@ export default function ProductDetailPage({
 
         </div>
       </div>
+
+      <ImageZoomModal
+        isOpen={isZoomModalOpen}
+        onClose={() => setIsZoomModalOpen(false)}
+        images={allImagesUrls}
+        initialIndex={selectedImageIndex}
+        onIndexChange={(index) => setSelectedImageIndex(index)}
+      />
     </div>
   );
 }
