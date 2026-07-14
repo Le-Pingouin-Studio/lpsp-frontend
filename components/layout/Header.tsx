@@ -1,10 +1,18 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-outline-variant bg-surface/80 backdrop-blur-md">
+    <motion.header 
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="sticky top-0 z-50 w-full border-b border-outline-variant bg-surface/80 backdrop-blur-md"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Image 
@@ -30,6 +38,6 @@ export function Header() {
           </Link>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
