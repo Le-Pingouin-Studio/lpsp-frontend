@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import { getWhatsAppGeneralLink } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/Button";
@@ -12,6 +13,7 @@ import { Select } from "@/components/ui/Select";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { Card } from "@/components/ui/Card";
 import { FileText, MessageCircle, PenTool, Truck, MessageCircleWarning } from "lucide-react";
+import { Variants } from "framer-motion";
 
 type CustomPrintFormData = {
   description: string;
@@ -22,6 +24,18 @@ type CustomPrintFormData = {
   whatsapp: string;
 };
 
+const fadeUpVariant: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 }
+  }
+};
 
 
 export default function ImpresionPersonalizadaPage() {
@@ -96,27 +110,37 @@ export default function ImpresionPersonalizadaPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-surface-container-lowest">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="flex flex-col gap-6">
+            <motion.div
+              className="flex flex-col gap-6"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary-dark">
                 Haz realidad tu idea, nosotros nos encargamos del resto.
               </h1>
               <p className="text-body-lg text-on-surface-variant">
                 ¿Tienes un concepto pero no sabes nada de 3D? No te preocupes. Describe lo que necesitas y nuestros expertos se encargarán del diseño, material y la impresión técnica por ti vía WhatsApp.
               </p>
-            </div>
-            <div className="w-full aspect-video rounded-xl bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
+            </motion.div>
+            <motion.div
+              className="w-full aspect-video rounded-xl bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/eleccion.jpg"
                 alt="Ilustración de impresión personalizada"
                 className="w-full h-full object-cover"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -124,12 +148,24 @@ export default function ImpresionPersonalizadaPage() {
       {/* Form Section */}
       <section className="py-16 bg-surface">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <motion.div
+            className="text-center mb-10"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariant}
+          >
             <h2 className="text-headline-md text-primary-dark">Cuéntanos sobre tu proyecto</h2>
             <div className="w-24 h-1 bg-secondary mx-auto mt-4 rounded-full" />
-          </div>
+          </motion.div>
 
-          <div className="max-w-[48rem] mx-auto">
+          <motion.div
+            className="max-w-3xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeUpVariant}
+          >
             <Card className="p-6 sm:p-8 elevation-2">
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
 
@@ -244,7 +280,7 @@ export default function ImpresionPersonalizadaPage() {
                     variant="primary"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full bg-[#895100] hover:bg-[#714200] text-white flex items-center justify-center gap-2 disabled:opacity-70"
+                    className="w-full bg-[#895100] hover:bg-on-secondary-container text-white flex items-center justify-center gap-2 disabled:opacity-70"
                   >
                     <MessageCircleWarning className="w-5 h-5" />
                     {isSubmitting ? "Enviando solicitud..." : "Solicitar Presupuesto"}
@@ -255,19 +291,31 @@ export default function ImpresionPersonalizadaPage() {
                 </div>
               </form>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Steps Section */}
       <section className="py-16 bg-surface-container-lowest">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <motion.div
+            className="text-center mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariant}
+          >
             <h2 className="text-headline-md text-primary-dark">Cómo lo hacemos posible</h2>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[64rem] mx-auto">
-            <div className="flex flex-col items-center text-center gap-4">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeUpVariant} className="flex flex-col items-center text-center gap-4">
               <div className="w-16 h-16 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
                 <FileText className="w-8 h-8" />
               </div>
@@ -275,9 +323,9 @@ export default function ImpresionPersonalizadaPage() {
               <p className="text-sm text-on-surface-variant">
                 Describe qué necesitas en lenguaje sencillo mediante nuestro formulario.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col items-center text-center gap-4">
+            <motion.div variants={fadeUpVariant} className="flex flex-col items-center text-center gap-4">
               <div className="w-16 h-16 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
                 <MessageCircle className="w-8 h-8" />
               </div>
@@ -285,9 +333,9 @@ export default function ImpresionPersonalizadaPage() {
               <p className="text-sm text-on-surface-variant">
                 Hablamos por WhatsApp para definir materiales y detalles técnicos.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col items-center text-center gap-4">
+            <motion.div variants={fadeUpVariant} className="flex flex-col items-center text-center gap-4">
               <div className="w-16 h-16 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
                 <PenTool className="w-8 h-8" />
               </div>
@@ -295,9 +343,9 @@ export default function ImpresionPersonalizadaPage() {
               <p className="text-sm text-on-surface-variant">
                 Fabricamos tu pieza con la más alta precisión industrial.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col items-center text-center gap-4">
+            <motion.div variants={fadeUpVariant} className="flex flex-col items-center text-center gap-4">
               <div className="w-16 h-16 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
                 <Truck className="w-8 h-8" />
               </div>
@@ -305,8 +353,8 @@ export default function ImpresionPersonalizadaPage() {
               <p className="text-sm text-on-surface-variant">
                 Envío seguro y rápido directamente a tu puerta.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </div>

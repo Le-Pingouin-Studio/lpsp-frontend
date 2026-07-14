@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { motion } from "framer-motion";
 import { Button } from "../../../components/ui/Button";
 import { useProductStore } from "../../../store/useProductStore";
 import { getWhatsAppProductLink } from "../../../lib/whatsapp";
@@ -36,22 +37,32 @@ export default function ProductDetailPage({
   const productUrl = `http://localhost:3000/catalogo/${id}`;
   const whatsappLink = getWhatsAppProductLink(product.name, productUrl);
 
-  const allImagesUrls = product.images && product.images.length > 0 
-    ? product.images.map(img => img.secureUrl || (img as any).secure_url) 
+  const allImagesUrls = product.images && product.images.length > 0
+    ? product.images.map(img => img.secureUrl || (img as any).secure_url)
     : [product.imageUrl || "/placeholder.png"];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-      <div className="mb-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24 overflow-hidden">
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Link href="/catalogo" className="text-sm font-medium text-secondary hover:text-secondary-dark flex items-center gap-2 transition-colors">
           &larr; Volver al catálogo
         </Link>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
         {/* Left column: Images */}
-        <div className="space-y-4">
-          <div 
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div
             className="aspect-square bg-surface-dim rounded-3xl overflow-hidden p-8 flex items-center justify-center border border-outline-variant/50 relative cursor-zoom-in group"
             onClick={() => setIsZoomModalOpen(true)}
           >
@@ -61,10 +72,14 @@ export default function ProductDetailPage({
               </span>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <motion.img
+              key={selectedImageIndex}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
               src={product.images && product.images.length > 0 ? product.images[selectedImageIndex]?.secureUrl : (product.imageUrl || "/placeholder.png")}
               alt={product.name}
-              className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-300"
+              className="w-full h-full object-contain mix-blend-multiply"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1594902347265-7d4b4a1b023f?q=80&w=1000&auto=format&fit=crop';
               }}
@@ -84,17 +99,34 @@ export default function ProductDetailPage({
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Right column: Details */}
-        <div className="flex flex-col">
+        <motion.div
+          className="flex flex-col"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+        >
           {product.category && (
             <span className="text-xs font-bold tracking-wider uppercase text-secondary-dark mb-3">
               {product.category.name}
             </span>
           )}
           <h1 className="text-4xl md:text-5xl font-bold text-primary-dark mb-4">{product.name}</h1>
-          <p className="text-3xl text-outline mb-8">${Number(product.price).toFixed(2)}</p>
+          <p className="text-3xl text-outline mb-4">${Number(product.price).toFixed(2)}</p>
+
+          <div className="flex flex-wrap gap-2 mb-8">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-xs font-medium text-on-surface-variant">
+              <span>🌱</span> Eco-friendly
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-xs font-medium text-on-surface-variant">
+              <span>⭐</span> Calidad Premium
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-xs font-medium text-on-surface-variant">
+              <span>🚚</span> Envíos a todo el país
+            </span>
+          </div>
 
           <div className="prose prose-sm text-on-surface-variant mb-12 leading-relaxed">
             <p>{product.description}</p>
@@ -133,18 +165,8 @@ export default function ProductDetailPage({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-auto border-t border-outline-variant/50 pt-8">
-            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
-              <span className="text-primary-dark text-xl mb-2">🌱</span>
-              <span className="text-xs font-semibold text-on-surface">Bio-Plástico Sostenible</span>
-            </div>
-            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
-              <span className="text-primary-dark text-xl mb-2">⭐</span>
-              <span className="text-xs font-semibold text-on-surface">Calidad Industrial</span>
-            </div>
-          </div>
 
-        </div>
+        </motion.div>
       </div>
 
       <ImageZoomModal
@@ -157,3 +179,4 @@ export default function ProductDetailPage({
     </div>
   );
 }
+

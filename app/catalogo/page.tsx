@@ -3,11 +3,25 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
+import { motion, Variants } from "framer-motion";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
 import { useProductStore } from "../../store/useProductStore";
 import { useCategoryStore } from "../../store/useCategoryStore";
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const fadeUpVariant: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+};
 
 export default function CatalogPage() {
   const { 
@@ -71,12 +85,17 @@ export default function CatalogPage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-      <div className="text-center max-w-4xl mx-auto mb-20">
+      <motion.div 
+        className="text-center max-w-4xl mx-auto mb-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h1 className="text-4xl md:text-5xl font-bold text-primary-dark mb-4">Catálogo de Impresiones 3D</h1>
         <p className="text-lg text-on-surface-variant leading-relaxed">
           Descubre nuestra selección de componentes de alta precisión. Desde prototipos industriales hasta piezas de arte orgánico, fabricados con los materiales más avanzados del sector.
         </p>
-      </div>
+      </motion.div>
 
       <div className="flex flex-col md:flex-row gap-8 items-start">
         {/* Sidebar Filters */}
@@ -138,38 +157,45 @@ export default function CatalogPage() {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
             {products.map((product) => (
-              <Card key={product.productId} className="flex flex-col h-full group">
-                <div className="relative h-[250px] w-full bg-surface overflow-hidden">
-                  <div className="absolute top-4 left-4 z-10 flex gap-2">
-                    {product.stock <= 0 && <Badge variant="neutral">AGOTADO</Badge>}
-                    {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
+              <motion.div key={product.productId} variants={fadeUpVariant} layout>
+                <Card className="flex flex-col h-full group">
+                  <div className="relative h-[250px] w-full bg-surface overflow-hidden">
+                    <div className="absolute top-4 left-4 z-10 flex gap-2">
+                      {product.stock <= 0 && <Badge variant="neutral">AGOTADO</Badge>}
+                      {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
+                    </div>
+                    <Image
+                      src={product.imageUrl || 'https://images.unsplash.com/photo-1682532015751-4c7ca29bb4f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-contain p-4 pt-12 group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                  <Image
-                    src={product.imageUrl || 'https://images.unsplash.com/photo-1682532015751-4c7ca29bb4f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-contain p-4 pt-12 group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 flex flex-col grow">
-                  <div className="flex justify-between items-start gap-4 mb-2">
-                    <h3 className="text-lg font-bold text-primary-dark line-clamp-2">{product.name}</h3>
-                    <span className="text-lg font-bold text-secondary-dark shrink-0">${Number(product.price).toFixed(2)}</span>
-                  </div>
+                  <div className="p-6 flex flex-col grow">
+                    <div className="flex justify-between items-start gap-4 mb-2">
+                      <h3 className="text-lg font-bold text-primary-dark line-clamp-2">{product.name}</h3>
+                      <span className="text-lg font-bold text-secondary-dark shrink-0">${Number(product.price).toFixed(2)}</span>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-2 mt-auto">
-                    <Link href={`https://wa.me/542996895145?text=Hola!%20Me%20interesa%20consultar%20por%20el%20producto%20%22${encodeURIComponent(product.name)}%22`} target="_blank" rel="noopener noreferrer">
-                      <Button variant="primary" size="sm" className="w-full text-xs">Consultar</Button>
-                    </Link>
-                    <Link href={`/catalogo/${product.productId}`}>
-                      <Button variant="secondary" size="sm" className="w-full text-xs">Detalles</Button>
-                    </Link>
+                    <div className="grid grid-cols-2 gap-2 mt-auto">
+                      <Link href={`https://wa.me/542996895145?text=Hola!%20Me%20interesa%20consultar%20por%20el%20producto%20%22${encodeURIComponent(product.name)}%22`} target="_blank" rel="noopener noreferrer">
+                        <Button variant="primary" size="sm" className="w-full text-xs">Consultar</Button>
+                      </Link>
+                      <Link href={`/catalogo/${product.productId}`}>
+                        <Button variant="secondary" size="sm" className="w-full text-xs">Detalles</Button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
 
             {products.length === 0 && (
@@ -177,7 +203,7 @@ export default function CatalogPage() {
                 <p className="text-on-surface-variant">No hay productos disponibles en este momento.</p>
               </div>
             )}
-          </div>
+          </motion.div>
 
           {hasMore && (
             <div ref={ref} className="mt-12 flex justify-center py-8">
@@ -194,3 +220,4 @@ export default function CatalogPage() {
     </div>
   );
 }
+

@@ -1,6 +1,9 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+"use client";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { motion, HTMLMotionProps } from 'framer-motion';
+
+export interface ButtonProps extends Omit<HTMLMotionProps<"button">, 'size'> {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }
@@ -36,8 +39,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileHover={{ y: -1 }}
+        whileTap={{ scale: 0.98 }}
         className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}
         {...props}
       />
