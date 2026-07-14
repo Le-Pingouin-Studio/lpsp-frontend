@@ -27,7 +27,7 @@ export function Header() {
 
   return (
     <>
-      <motion.header 
+      <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
@@ -35,16 +35,16 @@ export function Header() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative z-50">
           <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
-            <Image 
-              src="/logotipo.png" 
-              alt="Le Pingouin Studio Logo" 
-              width={180} 
-              height={48} 
+            <Image
+              src="/logotipo.png"
+              alt="Le Pingouin Studio Logo"
+              width={180}
+              height={48}
               className="object-contain h-12 w-auto"
               priority
             />
           </Link>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/impresion-personalizada" className="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">
@@ -54,7 +54,7 @@ export function Header() {
               Contacto
             </Link>
           </nav>
-          
+
           <div className="hidden md:flex items-center gap-4">
             <Link href="/catalogo">
               <Button variant="primary" size="sm">Ver Catálogo</Button>
@@ -62,12 +62,12 @@ export function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden p-2 text-on-surface-variant hover:text-primary transition-colors"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={24} />
           </button>
         </div>
       </motion.header>
@@ -85,31 +85,40 @@ export function Header() {
               className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
               onClick={closeMenu}
             />
-            
+
             {/* Sidebar */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-              className="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-surface shadow-xl z-50 p-6 pt-24 flex flex-col md:hidden"
+              className="fixed top-0 right-0 h-full w-[80vw] max-w-[320px] min-w-[280px] bg-[#fbf9f8] shadow-2xl z-50 p-6 pt-20 flex flex-col md:hidden overflow-y-auto"
             >
+              {/* Botón de cerrar interno */}
+              <button
+                onClick={closeMenu}
+                className="absolute top-6 right-6 p-2 text-on-surface-variant hover:text-primary transition-colors bg-[#fbf9f8] rounded-full"
+                aria-label="Cerrar menú"
+              >
+                <X size={24} />
+              </button>
+
               <nav className="flex flex-col gap-6">
-                <Link 
-                  href="/impresion-personalizada" 
-                  className="text-xl font-medium text-on-surface hover:text-primary transition-colors border-b border-outline-variant pb-4"
+                <Link
+                  href="/impresion-personalizada"
+                  className="text-xl font-medium text-on-surface hover:text-primary transition-colors border-b border-outline-variant pb-4 whitespace-nowrap"
                   onClick={closeMenu}
                 >
                   Impresión Personalizada
                 </Link>
-                <Link 
-                  href="/contacto" 
+                <Link
+                  href="/contacto"
                   className="text-xl font-medium text-on-surface hover:text-primary transition-colors border-b border-outline-variant pb-4"
                   onClick={closeMenu}
                 >
                   Contacto
                 </Link>
-                
+
                 <div className="mt-4">
                   <Link href="/catalogo" onClick={closeMenu}>
                     <Button variant="primary" className="w-full text-lg py-6">
