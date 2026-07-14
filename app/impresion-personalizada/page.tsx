@@ -13,6 +13,7 @@ import { Select } from "@/components/ui/Select";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { Card } from "@/components/ui/Card";
 import { FileText, MessageCircle, PenTool, Truck, MessageCircleWarning } from "lucide-react";
+import { Variants } from "framer-motion";
 
 type CustomPrintFormData = {
   description: string;
@@ -23,12 +24,12 @@ type CustomPrintFormData = {
   whatsapp: string;
 };
 
-const fadeUpVariant = {
+const fadeUpVariant: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -159,7 +160,7 @@ export default function ImpresionPersonalizadaPage() {
           </motion.div>
 
           <motion.div
-            className="max-w-[48rem] mx-auto"
+            className="max-w-3xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
@@ -279,7 +280,7 @@ export default function ImpresionPersonalizadaPage() {
                     variant="primary"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full bg-[#895100] hover:bg-[#714200] text-white flex items-center justify-center gap-2 disabled:opacity-70"
+                    className="w-full bg-[#895100] hover:bg-on-secondary-container text-white flex items-center justify-center gap-2 disabled:opacity-70"
                   >
                     <MessageCircleWarning className="w-5 h-5" />
                     {isSubmitting ? "Enviando solicitud..." : "Solicitar Presupuesto"}
@@ -308,7 +309,7 @@ export default function ImpresionPersonalizadaPage() {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[64rem] mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}

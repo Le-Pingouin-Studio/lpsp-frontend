@@ -2,14 +2,14 @@
 import React from 'react';
 import { getWhatsAppGeneralLink } from '@/lib/whatsapp';
 import { MessageCircle, Mail, Smartphone, HelpCircle, ChevronDown, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
-const fadeUpVariant = {
+const fadeUpVariant: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,

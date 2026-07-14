@@ -10,15 +10,15 @@ interface ImageZoomModalProps {
   onIndexChange?: (index: number) => void;
 }
 
-export function ImageZoomModal({ 
-  images, 
-  initialIndex = 0, 
-  isOpen, 
+export function ImageZoomModal({
+  images,
+  initialIndex = 0,
+  isOpen,
   onClose,
-  onIndexChange 
+  onIndexChange
 }: ImageZoomModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  
+
   useEffect(() => {
     if (isOpen) {
       setCurrentIndex(initialIndex);
@@ -27,21 +27,21 @@ export function ImageZoomModal({
 
   useEffect(() => {
     if (!isOpen) return;
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') handleNext();
       if (e.key === 'ArrowLeft') handlePrev();
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
-    
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, currentIndex, images.length]);
 
   const handleNext = (e?: React.MouseEvent) => {
@@ -63,18 +63,18 @@ export function ImageZoomModal({
   return (
     <AnimatePresence>
       {isOpen && images.length > 0 && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 backdrop-blur-sm"
           onClick={onClose}
         >
           {/* Botón Cerrar */}
-          <button 
+          <button
             onClick={(e) => { e.stopPropagation(); onClose(); }}
-            className="absolute top-4 right-4 md:top-8 md:right-8 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[110]"
+            className="absolute top-4 right-4 md:top-8 md:right-8 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-110"
             aria-label="Cerrar zoom"
           >
             <X size={24} />
@@ -82,9 +82,9 @@ export function ImageZoomModal({
 
           {/* Navegación anterior */}
           {images.length > 1 && (
-            <button 
+            <button
               onClick={handlePrev}
-              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[110]"
+              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-110"
               aria-label="Imagen anterior"
             >
               <ChevronLeft size={32} />
@@ -92,7 +92,7 @@ export function ImageZoomModal({
           )}
 
           {/* Imagen */}
-          <div 
+          <div
             className="relative w-full h-full p-4 md:p-12 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
@@ -112,9 +112,9 @@ export function ImageZoomModal({
 
           {/* Navegación siguiente */}
           {images.length > 1 && (
-            <button 
+            <button
               onClick={handleNext}
-              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[110]"
+              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-110"
               aria-label="Imagen siguiente"
             >
               <ChevronRight size={32} />
@@ -123,7 +123,7 @@ export function ImageZoomModal({
 
           {/* Indicador de número */}
           {images.length > 1 && (
-            <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-1.5 rounded-full text-white/80 text-sm tracking-widest pointer-events-none z-[110]">
+            <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-1.5 rounded-full text-white/80 text-sm tracking-widest pointer-events-none z-110">
               {currentIndex + 1} / {images.length}
             </div>
           )}

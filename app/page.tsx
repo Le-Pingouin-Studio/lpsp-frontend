@@ -2,18 +2,18 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { useProductStore } from "../store/useProductStore";
 
-const fadeUpVariant = {
+const fadeUpVariant: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -35,25 +35,25 @@ export default function Home() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 md:pt-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
+          <motion.div
             className="max-w-2xl"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.h1 
+            <motion.h1
               variants={fadeUpVariant}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-dark leading-[1.1] mb-6 tracking-tight"
             >
               Nos gustan las cosas bien hechas
             </motion.h1>
-            <motion.p 
+            <motion.p
               variants={fadeUpVariant}
               className="text-lg md:text-xl text-on-surface-variant mb-8 leading-relaxed"
             >
               Combinamos la ingeniería 3D de alta precisión con el cuidado artesanal de pegar, pintar y revisar cada pieza a mano. Calidad industrial, directo de nuestro taller a tus manos.
             </motion.p>
-            <motion.div 
+            <motion.div
               variants={fadeUpVariant}
               className="flex flex-wrap gap-4"
             >
@@ -65,14 +65,14 @@ export default function Home() {
               </Link>
             </motion.div>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="relative"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
             {/* Hero Image / Graphic placeholder */}
-            <div className="aspect-square bg-gradient-to-br from-surface-dim to-surface-dim/50 rounded-3xl shadow-xl flex items-center justify-center border border-outline-variant/30 relative overflow-hidden">
+            <div className="aspect-square bg-linear-to-br from-surface-dim to-surface-dim/50 rounded-3xl shadow-xl flex items-center justify-center border border-outline-variant/30 relative overflow-hidden">
               <img
                 src="/impresora3dheroimage.jpg"
                 alt="Impresión 3D de alta precisión"
@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* Catalog Preview Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -98,7 +98,7 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           initial="hidden"
           whileInView="visible"
@@ -124,7 +124,7 @@ export default function Home() {
                       className="object-contain p-4 pt-12 group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-6 flex flex-col flex-grow">
+                  <div className="p-6 flex flex-col grow">
                     <h3 className="text-lg font-bold text-primary-dark mb-1">{product.name}</h3>
                     <p className="text-sm text-on-surface-variant line-clamp-2 mb-4">
                       {product.description}
