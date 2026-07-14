@@ -94,7 +94,16 @@ export default function ProductDetailPage({
             </span>
           )}
           <h1 className="text-4xl md:text-5xl font-bold text-primary-dark mb-4">{product.name}</h1>
-          <p className="text-3xl text-outline mb-8">${Number(product.price).toFixed(2)}</p>
+          <p className="text-3xl text-outline mb-4">${Number(product.price).toFixed(2)}</p>
+
+          <div className="flex flex-wrap gap-2 mb-8">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-xs font-medium text-on-surface-variant">
+              <span>🌱</span> Eco-friendly
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-xs font-medium text-on-surface-variant">
+              <span>⭐</span> Calidad Premium
+            </span>
+          </div>
 
           <div className="prose prose-sm text-on-surface-variant mb-12 leading-relaxed">
             <p>{product.description}</p>
@@ -133,16 +142,6 @@ export default function ProductDetailPage({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-auto border-t border-outline-variant/50 pt-8">
-            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
-              <span className="text-primary-dark text-xl mb-2">🌱</span>
-              <span className="text-xs font-semibold text-on-surface">Bio-Plástico Sostenible</span>
-            </div>
-            <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-xl border border-outline-variant/30 text-center">
-              <span className="text-primary-dark text-xl mb-2">⭐</span>
-              <span className="text-xs font-semibold text-on-surface">Calidad Industrial</span>
-            </div>
-          </div>
 
         </div>
       </div>
