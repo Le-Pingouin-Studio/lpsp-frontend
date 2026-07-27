@@ -7,6 +7,8 @@ import { Button } from "../../../components/ui/Button";
 import { useProductStore } from "../../../store/useProductStore";
 import { getWhatsAppProductLink } from "../../../lib/whatsapp";
 import { ImageZoomModal } from "../../../components/ui/ImageZoomModal";
+import { ColorSelector } from "../../../components/ui/ColorSelector";
+import { getFilaments, Filament } from "../../../lib/api";
 
 export default function ProductDetailPage({
   params,
@@ -19,9 +21,12 @@ export default function ProductDetailPage({
   const { selectedProduct: product, loadingSelectedProduct, fetchProductById } = useProductStore();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
+  const [filaments, setFilaments] = useState<Filament[]>([]);
+  const [selectedFilamentId, setSelectedFilamentId] = useState<string | undefined>();
 
   useEffect(() => {
     fetchProductById(id);
+    getFilaments().then(setFilaments).catch(console.error);
   }, [id, fetchProductById]);
 
   if (loadingSelectedProduct) {
@@ -35,7 +40,11 @@ export default function ProductDetailPage({
   // URL of the current product
   // Ideally this would come from headers or a config, but hardcoding for MVP based on local dev
   const productUrl = `http://localhost:3000/catalogo/${id}`;
-  const whatsappLink = getWhatsAppProductLink(product.name, productUrl);
+  
+  const selectedFilament = filaments.find(f => f.filamentId === selectedFilamentId);
+  const colorText = selectedFilament ? `${selectedFilament.marca} ${selectedFilament.modelo} (Color HEX: ${selectedFilament.color})` : undefined;
+
+  const whatsappLink = getWhatsAppProductLink(product.name, productUrl, colorText);
 
   const allImagesUrls = product.images && product.images.length > 0
     ? product.images.map(img => img.secureUrl || (img as any).secure_url)
@@ -132,7 +141,12 @@ export default function ProductDetailPage({
             <p>{product.description}</p>
           </div>
 
-
+          <ColorSelector 
+            filaments={filaments} 
+            requiredGrams={Number(product.gramos_pieza) || 0} 
+            value={selectedFilamentId} 
+            onChange={setSelectedFilamentId} 
+          />
 
           <div className="bg-surface-dim/50 rounded-2xl p-6 mb-8 border border-outline-variant/30">
             <h3 className="text-sm font-bold text-primary-dark mb-4 flex items-center gap-2">
@@ -153,14 +167,19 @@ export default function ProductDetailPage({
           </div>
 
           <div className="mb-8">
-            <Link href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block w-full">
+            <Link href={whatsappLink} target="_blank" rel="noopener noreferrer" className={`block w-full ${!selectedFilamentId ? 'opacity-50 pointer-events-none' : ''}`}>
               <Button variant="primary" size="lg" className="w-full bg-secondary hover:bg-secondary-dark text-on-secondary shadow-md h-16 text-lg group">
                 <span className="flex items-center gap-3">
                   💬 Consultar por WhatsApp
                 </span>
               </Button>
             </Link>
-            <p className="text-xs text-center text-on-surface-variant mt-4 italic">
+            {!selectedFilamentId && (
+              <p className="text-xs text-center text-destructive mt-2 font-bold">
+                Debes seleccionar un color para continuar.
+              </p>
+            )}
+            <p className="text-xs text-center text-on-surface-variant mt-2 italic">
               Consultar por colores disponibles. Tenga en cuenta que al ser impresión 3D, puede haber leves variaciones en el acabado.
             </p>
           </div>
