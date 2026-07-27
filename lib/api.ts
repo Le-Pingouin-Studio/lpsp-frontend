@@ -98,12 +98,19 @@ export async function getCategories(): Promise<Category[]> {
   }
 }
 
+export interface Color {
+  colorId: string;
+  nombre: string;
+  hexCode: string;
+  pantone?: string;
+}
+
 export interface Filament {
   filamentId: string;
   marca: string;
   modelo: string;
   tipo: string;
-  color: string;
+  colors: Color[];
   cantidadGramos: number;
 }
 
@@ -111,6 +118,18 @@ export async function getFilaments(): Promise<Filament[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/filaments`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch filaments');
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function getColors(): Promise<Color[]> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/colors`, { next: { revalidate: 60 } });
+    if (!res.ok) throw new Error('Failed to fetch colors');
     const data = await res.json();
     return data;
   } catch (error) {

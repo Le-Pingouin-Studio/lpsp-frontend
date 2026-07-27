@@ -8,7 +8,7 @@ import { useProductStore } from "../../../store/useProductStore";
 import { getWhatsAppProductLink } from "../../../lib/whatsapp";
 import { ImageZoomModal } from "../../../components/ui/ImageZoomModal";
 import { ColorSelector } from "../../../components/ui/ColorSelector";
-import { getFilaments, Filament } from "../../../lib/api";
+import { getFilaments, Filament, Color } from "../../../lib/api";
 
 export default function ProductDetailPage({
   params,
@@ -23,6 +23,7 @@ export default function ProductDetailPage({
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [filaments, setFilaments] = useState<Filament[]>([]);
   const [selectedFilamentId, setSelectedFilamentId] = useState<string | undefined>();
+  const [selectedColor, setSelectedColor] = useState<Color | undefined>();
 
   useEffect(() => {
     fetchProductById(id);
@@ -42,7 +43,7 @@ export default function ProductDetailPage({
   const productUrl = `http://localhost:3000/catalogo/${id}`;
   
   const selectedFilament = filaments.find(f => f.filamentId === selectedFilamentId);
-  const colorText = selectedFilament ? `${selectedFilament.marca} ${selectedFilament.modelo} (Color HEX: ${selectedFilament.color})` : undefined;
+  const colorText = selectedFilament && selectedColor ? `${selectedFilament.marca} ${selectedFilament.modelo} (Color: ${selectedColor.nombre} - ${selectedColor.hexCode})` : undefined;
 
   const whatsappLink = getWhatsAppProductLink(product.name, productUrl, colorText);
 
@@ -144,8 +145,9 @@ export default function ProductDetailPage({
           <ColorSelector 
             filaments={filaments} 
             requiredGrams={Number(product.gramos_pieza) || 0} 
-            value={selectedFilamentId} 
-            onChange={setSelectedFilamentId} 
+            value={selectedFilamentId}
+            selectedColor={selectedColor}
+            onChange={(fId, color) => { setSelectedFilamentId(fId); setSelectedColor(color); }} 
           />
 
           <div className="bg-surface-dim/50 rounded-2xl p-6 mb-8 border border-outline-variant/30">
